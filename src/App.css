@@ -8,24 +8,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(20px + 2vmin);
-  color: white;
+  justify-content: flex-start; /* Align to the top of the viewport */
+  font-size: calc(10px + 2vmin);
+  color: #e9546b;
   padding: 0.5em;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align items vertically */
+  width: 100%;
+  position: absolute;
+  top: 5px;
+  padding: 20px;
 }
 
 .title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 9vmin;
-  margin-bottom: 0.5em;
+  font-size: 7vmin;
+  margin-top: 70px; /* Change here to adjust distance from header */
+  color: #00a381;
+}
+
+.mode {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 4vmin;
+  color: #895b8a;
+  margin-left: 10px;
 }
 
 .reelContainer {
   display: flex;
   justify-content: space-around;
   flex-wrap: nowrap;
-  max-width: 100%;
-  overflow: auto;
+  max-width: 95%; /* Reduce the maximum width to prevent the reels from being cut off */
+  overflow: hidden; /* Hide the overflow to prevent scrolling */
 }
 
 .reel {
@@ -34,10 +52,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 20vw;
+  height: 30vw;
   width: 20vw;
-  border: 3px solid #61dafb;
-  padding: 0.5em;
+  border: 3px solid #89c3eb;
+  padding: 5px 0.5em; /* Update padding to add 5px to the top and bottom of the reel */
   margin: 0.5em;
 }
 
@@ -47,25 +65,19 @@
 
 button {
   font-family: 'Orbitron', sans-serif;
-  font-size: 7vmin;
-  background-color: #61dafb;
+  font-size: 5vmin; /* Reduce the font size to prevent the text from overflowing */
+  background-color: #89c3eb;
   border: none;
   cursor: pointer;
   border-radius: 10px;
   margin-top: 20px;
-  width: 20vw; 
-  height: 5vw;
+  width: 100%; /* Make the button fill its container */
+  height: ７vw;
+  padding: 5px 0; /* Add padding to the top and bottom of the button */
 }
 
 button:hover {
-  background-color: #bbeeff;
-}
-
-.bonus {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 7vmin;
-  color: #61dafb;
-  margin-top: 0.5em;
+  background-color: #2ca9e1;
 }
 
 .lamp {
@@ -81,16 +93,7 @@ button:hover {
 }
 
 .lamp.lit {
-  color: #00FFFF;
-}
-
-.actionContainer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  height: 50%;
-  background-color: #282c34;
+  color: #61dafb;
 }
 
 .newMedals {
@@ -98,6 +101,7 @@ button:hover {
   font-size: 5vmin;
   transition: opacity 2s ease-in-out;
   margin-top: 30px;
+  color: #ffec47;
 }
 
 .newMedals.invisible {
@@ -108,30 +112,9 @@ button:hover {
   opacity: 1;
 }
 
-.reelContainer, .actionContainer {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: nowrap;
-  max-width: 100%;
-  overflow: auto;
-  margin: 0.5em;
-}
-
-.actionContainer {
-  align-items: center;
-  width: 100%;
-  background-color: #282c34;
-}
-
-.lamp, button, .newMedals {
-  flex: 1;
-  text-align: center;
-}
-
 .totalAndSpinCount {
   font-family: 'Orbitron', sans-serif;
   font-size: 4vmin;
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  color: #deb068;
+  margin-right: 10px;
 }

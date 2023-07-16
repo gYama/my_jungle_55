@@ -17,6 +17,7 @@ const rightReel = ['🍇', '7', '3', '🔔', '🐯', '🍇', '🤡', '🔔', '�
 
 const testmode = true;
 let isSeven = false;
+let mode = "";
 
 const getSlice = (reel: string[], position: number) => {
   if (position + 3 > reel.length) {
@@ -37,6 +38,9 @@ const App: React.FC = () => {
   const [spinCount, setSpinCount] = useState(0);
   const [lampColor, setLampColor] = useState("unlit");
 
+  if(testmode){
+    mode = "TEST MODE";
+  }
   useEffect(() => {
     if (newMedals > 0) {
       setIsMedalsVisible(true);
@@ -121,7 +125,12 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <TotalAndSpinCount total={total} spinCount={spinCount}/>
+      <div className="header">
+        <div className="mode">
+          <span>{mode}</span>
+        </div>
+        <TotalAndSpinCount total={total} spinCount={spinCount}/>
+      </div>
       <div className="title">My Jungle 55</div>
       <div className="reelContainer">
         <div className="reelWrapper">
@@ -162,8 +171,8 @@ const App: React.FC = () => {
         </div>
       </div>
     </div>
-  );  
-
+  ); 
+  
 };
 
 export default App;
