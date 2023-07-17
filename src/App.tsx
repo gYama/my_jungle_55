@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import TotalAndSpinCount from './TotalAndSpinCount';
+import Header from './Header';
+import Reel from './Reel';
+import ReelWrapper from './ReelWrapper';
+import SpinButton from './SpinButton';
+import Title from './Title';
+// import Reel from './Reel';
 import './App.css';
 
+const leftReel = ['🔔', '7', '🐯', '🍇', '🐯', '🍇', '3', '🍒', '🍇', '🐯', '🍇', '7', '🤡', '🍇', '🐯', '🍇', '🍒', '3', '🍇', '🐯', '🍇'];
+const centerReel = ['🐯', '7', '🍇', '🍒', '🤡', '🐯', '3', '🍇', '🍒', '🐯', '🔔', '🍇', '🍒', '🐯', '3', '🍇', '🍒', '🐯', '🔔', '🍇', '🍒'];
+const rightReel = ['🍇', '7', '3', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯'];
+const symbolProbabilities = {
+  '🐯': 1 / 7,
+  '🍇': 1 / 6,
+  '🍒': 1 / 30,
+  '🔔': 1 / 256,
+  '🤡': 1 / 256,
+  '3': 1 / 256,
+  '7': 1 / 256,
+};
 const symbolBonuses: { [key: string]: number } = {
   '🔔': 400,
   '7': 2000,
-  '🍒': 200,
+  '🍒': 50,
   '🐯': 100,
   '🍇': 300,
   '3': 1000,
   '🤡': 500,
 };
-const leftReel = ['🔔', '7', '🐯', '🍇', '🐯', '🍇', '3', '🍒', '🍇', '🐯', '🍇', '7', '🤡', '🍇', '🐯', '🍇', '🍒', '3', '🍇', '🐯', '🍇'];
-const centerReel = ['🐯', '7', '🍇', '🍒', '🤡', '🐯', '3', '🍇', '🍒', '🐯', '🔔', '🍇', '🍒', '🐯', '3', '🍇', '🍒', '🐯', '🔔', '🍇', '🍒'];
-const rightReel = ['🍇', '7', '3', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯', '🍇', '🤡', '🔔', '🐯'];
 
+const effectiveLines = [[0,0,0],[1,1,1],[2,2,2],[0,1,2],[2,1,0]];
 const testmode = true;
-let isSeven = false;
 let mode = "";
 
 const getSlice = (reel: string[], position: number) => {
@@ -25,6 +40,45 @@ const getSlice = (reel: string[], position: number) => {
   } else {
     return reel.slice(position, position + 3);
   }
+};
+
+const findSymbolByProbability = (probabilities: { [key: string]: number }) => {
+  const randomValue = Math.random();
+  let cumulativeProbability = 0.0;
+  for (const symbol in probabilities) {
+    cumulativeProbability += probabilities[symbol];
+    if (randomValue <= cumulativeProbability) {
+      return symbol;
+    }
+  }
+  return null;
+};
+
+const getSymbolIndex = (reel: string[], symbol: string): number[] => {
+  const symbolIndices: number[] = [];
+  for (let i = 0; i < reel.length; i++) {
+    if (reel[i] === symbol) {
+      symbolIndices.push(i);
+    }
+  }
+  return symbolIndices;
+};
+
+const getSymbolIndices = (reel: string[]): { [key: string]: number[] } => {
+  const symbolIndices: { [key: string]: number[] } = {};
+  for (const symbol of Object.keys(symbolProbabilities)) {
+    symbolIndices[symbol] = getSymbolIndex(reel, symbol);
+  }
+  return symbolIndices;
+};
+
+const leftSymbolIndices = getSymbolIndices(leftReel);
+const centerSymbolIndices = getSymbolIndices(centerReel);
+const rightSymbolIndices = getSymbolIndices(rightReel);
+
+const getRandomSymbolIndex = (symbolIndices: { [key: string]: number[] }, symbol: string): number => {
+  const indices = symbolIndices[symbol];
+  return indices[Math.floor(Math.random() * indices.length)];
 };
 
 const App: React.FC = () => {
@@ -52,7 +106,6 @@ const App: React.FC = () => {
   }, [newMedals]);
 
   const spinReel = () => {
-    isSeven = false;
     setIsMedalsVisible(false);
     setIsSpinning(true);
     setNewMedals(0);
@@ -60,119 +113,143 @@ const App: React.FC = () => {
   
     const nextSpinCount = spinCount + 1;
     setSpinCount(nextSpinCount);
-  
-    let leftReelCounter = testmode && nextSpinCount % 3 === 0 ? leftReel.indexOf('7') : Math.floor(Math.random() * 21);
-    let centerReelCounter = testmode && nextSpinCount % 3 === 0 ? centerReel.indexOf('7') : Math.floor(Math.random() * 21);
-    let rightReelCounter = testmode && nextSpinCount % 3 === 0 ? rightReel.indexOf('7') : Math.floor(Math.random() * 21);
-  
+    
+    let drawnSymbol = findSymbolByProbability(symbolProbabilities);
     if(testmode && nextSpinCount % 3 === 0){
-      setLampColor("lit");
-      isSeven = true;
+      const testArray = ['3','7'];
+      drawnSymbol = testArray[Math.floor(Math.random() * testArray.length)];
     }
+    console.log(drawnSymbol);
+    const effectiveLine = effectiveLines[Math.floor(Math.random() * effectiveLines.length)];
+    console.log(effectiveLine);
+          
+    let leftReelCounter = drawnSymbol ? getRandomSymbolIndex(leftSymbolIndices, drawnSymbol) : Math.floor(Math.random() * 21);
+    let centerReelCounter = drawnSymbol ? getRandomSymbolIndex(centerSymbolIndices, drawnSymbol) : Math.floor(Math.random() * 21);
+    let rightReelCounter = drawnSymbol ? getRandomSymbolIndex(rightSymbolIndices, drawnSymbol) : Math.floor(Math.random() * 21);
+
+    if(drawnSymbol === '🍒'){
+      rightReelCounter = Math.floor(Math.random() * 21);
+    }
+
+    if (testmode && nextSpinCount % 3 === 0) {
+      setLampColor("lit");
+    }
+  
+    let tmpLeftReelCounter = leftReelCounter;
+    let tmpCenterReelCounter = centerReelCounter;
+    let tmpRightReelCounter = rightReelCounter;
+
     const intervalId = setInterval(() => {
-      leftReelCounter += 1;
-      centerReelCounter += 1;
-      rightReelCounter += 1;
-      setLeftReelPosition(leftReelCounter % 21);
-      setCenterReelPosition(centerReelCounter % 21);
-      setRightReelPosition(rightReelCounter % 21);
+      tmpLeftReelCounter += 1;
+      tmpCenterReelCounter += 1;
+      tmpRightReelCounter += 1;
+      setLeftReelPosition(tmpLeftReelCounter % 21);
+      setCenterReelPosition(tmpCenterReelCounter % 21);
+      setRightReelPosition(tmpRightReelCounter % 21);
     }, 100);
   
     setTimeout(() => {
       clearInterval(intervalId);
-      // Reels should always stop on '7', on every third spin
-      if (testmode && nextSpinCount % 3 === 0) {
-        setLeftReelPosition(leftReel.indexOf('7'));
-        setCenterReelPosition(centerReel.indexOf('7'));
-        setRightReelPosition(rightReel.indexOf('7'));
+    
+      leftReelCounter = (leftReelCounter - effectiveLine[0] + leftReel.length) % leftReel.length;
+      centerReelCounter = (centerReelCounter - effectiveLine[1] + centerReel.length) % centerReel.length;
+      rightReelCounter = (rightReelCounter - effectiveLine[2] + rightReel.length) % rightReel.length;
+    
+      const checkSymbols = [null, '3', '🍒'];
+      const checkCounter = [5,6,7,14,15,16];
+      if (!checkSymbols.includes(drawnSymbol) && checkCounter.includes(leftReelCounter)) {
+          leftReelCounter = (leftReelCounter - 3 + leftReel.length) % leftReel.length;
       }
-      calculateBonus(leftReelCounter % 21, centerReelCounter % 21, rightReelCounter % 21);
+    
+      if (drawnSymbol === null) {
+        const leftSymbolsTmp = getSlice(leftReel, leftReelCounter % 21);
+        const centerSymbolsTmp = getSlice(centerReel, centerReelCounter % 21);
+        const rightSymbolsTmp = getSlice(rightReel, rightReelCounter % 21);
+        const winningLinesTmp = [
+          [leftSymbolsTmp[0], centerSymbolsTmp[0], rightSymbolsTmp[0]], // top horizontal
+          [leftSymbolsTmp[1], centerSymbolsTmp[1], rightSymbolsTmp[1]], // middle horizontal
+          [leftSymbolsTmp[2], centerSymbolsTmp[2], rightSymbolsTmp[2]], // bottom horizontal
+          [leftSymbolsTmp[0], centerSymbolsTmp[1], rightSymbolsTmp[2]], // diagonal top-left to bottom-right
+          [leftSymbolsTmp[2], centerSymbolsTmp[1], rightSymbolsTmp[0]], // diagonal bottom-left to top-right
+        ];
+        for (const line of winningLinesTmp) {
+          if (line.every((symbol, _, arr) => symbol === arr[0]) && line[0] !== '🍒') {
+            rightReelCounter = (rightReelCounter + 1) % rightReel.length;
+            break;
+          }
+        }
+      }
+          
+      setLeftReelPosition(leftReelCounter % 21);
+      setCenterReelPosition(centerReelCounter % 21);
+      setRightReelPosition(rightReelCounter % 21);
+    
+      calculateBonus(drawnSymbol, leftReelCounter % 21, centerReelCounter % 21, rightReelCounter % 21);
       setIsSpinning(false);
     }, 3000);
   };
-    
-  const calculateBonus = (leftPosition: number, centerPosition: number, rightPosition: number) => {
+
+  const calculateBonus = (drawnSymbol:string|null, leftPosition: number, centerPosition: number, rightPosition: number) => {
     const leftSymbols = getSlice(leftReel, leftPosition);
     const centerSymbols = getSlice(centerReel, centerPosition);
     const rightSymbols = getSlice(rightReel, rightPosition);
-
+  
+    let totalBonus = 0;
+  
+    if (drawnSymbol === null && leftSymbols.includes('🍒')) {
+      const bonus = symbolBonuses['🍒'];
+      totalBonus += bonus;
+    }
+  
     const winningLines = [
-      [leftSymbols[1], centerSymbols[1], rightSymbols[1]], // middle horizontal
       [leftSymbols[0], centerSymbols[0], rightSymbols[0]], // top horizontal
+      [leftSymbols[1], centerSymbols[1], rightSymbols[1]], // middle horizontal
       [leftSymbols[2], centerSymbols[2], rightSymbols[2]], // bottom horizontal
       [leftSymbols[0], centerSymbols[1], rightSymbols[2]], // diagonal top-left to bottom-right
       [leftSymbols[2], centerSymbols[1], rightSymbols[0]], // diagonal bottom-left to top-right
     ];
-
-    let totalBonus = 0; // Total bonus for this spin
+  
     for (const line of winningLines) {
       if (line.every((symbol, _, arr) => symbol === arr[0])) {
         const bonus = symbolBonuses[line[0]];
         totalBonus += bonus;
-        if (line[0] === '7') { // Changed from '3' to '7'
+        if (line[0] === '7' || line[0] === '3') {
           setLampColor("lit");
+        }
+
+        if (line[0] === '🍒' && leftSymbols.includes('🍒')) {
+          totalBonus += bonus;
         }
       }
     }
-    if (testmode && isSeven) {
-      totalBonus = 2000; 
-    }
+  
     if(totalBonus > 0){
       setNewMedals(totalBonus);
-      setTotal(previousTotal => previousTotal + totalBonus); // Add to total instead of decreasing from a bonus
+      setTotal(previousTotal => previousTotal + totalBonus);
     }
   };
-
+    
   return (
     <div className="App">
-      <div className="header">
-        <div className="mode">
-          <span>{mode}</span>
-        </div>
-        <TotalAndSpinCount total={total} spinCount={spinCount}/>
-      </div>
-      <div className="title">My Jungle 55</div>
+      <Header mode={mode} total={total} spinCount={spinCount} />
+      <Title title="My Jungle 55" />
       <div className="reelContainer">
-        <div className="reelWrapper">
-          <div className="reel">
-            {getSlice(leftReel, leftReelPosition).map((symbol, i) => (
-              <div key={i} className="symbol">
-                {symbol}
-              </div>
-            ))}
-          </div>
+        <ReelWrapper>
+          <Reel reelData={leftReel} position={leftReelPosition} />
           <div className={`lamp ${lampColor}`}>55</div>
-        </div>
-        <div className="reelWrapper">
-          <div className="reel">
-            {getSlice(centerReel, centerReelPosition).map((symbol, i) => (
-              <div key={i} className="symbol">
-                {symbol}
-              </div>
-            ))}
-          </div>
-          <div>
-            <button onClick={spinReel} disabled={isSpinning}>
-              SPIN
-            </button>
-          </div>
-        </div>
-        <div className="reelWrapper">
-          <div className="reel">
-            {getSlice(rightReel, rightReelPosition).map((symbol, i) => (
-              <div key={i} className="symbol">
-                {symbol}
-              </div>
-            ))}
-          </div>
-          <div>
-            {isMedalsVisible && <div className="newMedals">+{newMedals}</div>}
-          </div>
-        </div>
+        </ReelWrapper>
+        <ReelWrapper>
+          <Reel reelData={centerReel} position={centerReelPosition} />
+          <SpinButton spinReel={spinReel} isSpinning={isSpinning} />
+        </ReelWrapper>
+        <ReelWrapper>
+          <Reel reelData={rightReel} position={rightReelPosition} />
+          {isMedalsVisible && <div className="newMedals">+{newMedals}</div>}
+        </ReelWrapper>
       </div>
     </div>
-  ); 
-  
+  );
+    
 };
 
 export default App;
