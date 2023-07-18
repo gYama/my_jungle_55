@@ -30,7 +30,7 @@ const symbolBonuses: { [key: string]: number } = {
 
 const effectiveLines = [[0,0,0],[1,1,1],[2,2,2],[0,1,2],[2,1,0]];
 
-const carnivalRate = 1 / 10;
+const carnivalRate = 1 / 20;
 
 const getSlice = (reel: string[], position: number) => {
   if (position + 3 > reel.length) {
