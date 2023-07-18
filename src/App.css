@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align to the top of the viewport */
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: #e9546b;
   padding: 0.5em;
@@ -17,7 +17,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Align items vertically */
+  align-items: center;
   width: 100%;
   position: absolute;
   top: 5px;
@@ -27,8 +27,24 @@
 .title {
   font-family: 'Orbitron', sans-serif;
   font-size: 7vmin;
-  margin-top: 70px; /* Change here to adjust distance from header */
+  margin-top: 70px;
   color: #00a381;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  margin-right: auto;
+}
+
+.version {
+  margin-left: 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .mode {
@@ -42,8 +58,8 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: nowrap;
-  max-width: 95%; /* Reduce the maximum width to prevent the reels from being cut off */
-  overflow: hidden; /* Hide the overflow to prevent scrolling */
+  max-width: 95%;
+  overflow: hidden;
 }
 
 .reel {
@@ -55,7 +71,7 @@
   height: 30vw;
   width: 20vw;
   border: 3px solid #89c3eb;
-  padding: 5px 0.5em; /* Update padding to add 5px to the top and bottom of the reel */
+  padding: 5px 0.5em;
   margin: 0.5em;
 }
 
@@ -65,15 +81,15 @@
 
 button {
   font-family: 'Orbitron', sans-serif;
-  font-size: 5vmin; /* Reduce the font size to prevent the text from overflowing */
+  font-size: 5vmin;
   background-color: #89c3eb;
   border: none;
   cursor: pointer;
   border-radius: 10px;
   margin-top: 20px;
-  width: 100%; /* Make the button fill its container */
-  height: ７vw;
-  padding: 5px 0; /* Add padding to the top and bottom of the button */
+  width: 100%;
+  height: 7vw;
+  padding: 5px 0;
 }
 
 button:hover {
@@ -117,4 +133,39 @@ button:hover {
   font-size: 4vmin;
   color: #deb068;
   margin-right: 10px;
+}
+
+.changeLogContainer {
+  margin: auto;
+  background-color: #282c34;
+  color: #e9546b;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: calc(10px + 2vmin);
+  font-family: 'Arial', sans-serif;
+}
+
+.changeLogContainer h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #89c3eb;
+}
+
+.changeItem {
+  margin-bottom: 30px;
+}
+
+.changeItem h2 {
+  color: #00a381;
+  margin-bottom: 10px;
+}
+
+.changeItem ul {
+  list-style-type: square;
+  list-style-position: inside;
+}
+
+.changeItem ul li {
+  margin-bottom: 5px;
+  color: #deb068;
 }

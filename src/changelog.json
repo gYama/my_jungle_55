@@ -1,0 +1,23 @@
+[
+  {
+    "version": "v0.2.0",
+    "date": "July 19, 2023",
+    "changes": [
+      "Added Jungle Rush feature. In this mode, which is entered with a 1/20 chance, for the next 10 games, the '3' and '7' numbers have increased win probabilities of 1/2 and 1/4 respectively. However, if a lesser winning combination occurs, it takes precedence."
+    ]
+  },
+  {
+      "version": "v0.1.1",
+      "date": "July 16, 2023",
+      "changes": [
+        "Modified TEST MODE."
+      ]
+  },
+  {
+      "version": "v0.1.0",
+      "date": "July 14, 2023",
+      "changes": [
+          "Initial release."
+      ]
+  }
+]
