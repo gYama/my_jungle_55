@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom"; // useNavigateを追加
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // useNavigateを追加
 import ChangeLog from './ChangeLog';
 import SlotGame from './SlotGame';
 import './App.css';
