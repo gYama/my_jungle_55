@@ -1,5 +1,12 @@
 [
   {
+    "version": "v0.2.1",
+    "date": "July 21, 2023",
+    "changes": [
+      "Modified CSS."
+    ]
+  },
+  {
     "version": "v0.2.0",
     "date": "July 19, 2023",
     "changes": [
