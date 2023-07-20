@@ -132,7 +132,7 @@ button:hover {
 
 .totalAndSpinCount {
   font-family: 'Orbitron', sans-serif;
-  font-size: calc(15px + 2vmin);
+  font-size: calc(5px + 2vmin);
   color: #deb068;
   margin-right: 10px;
 }
@@ -192,7 +192,7 @@ button:hover {
   }
   
   .symbol {
-    font-size: calc(30px + 7vmin);
+    font-size: calc(25px + 7vmin);
   }
   
   .button {
@@ -209,6 +209,6 @@ button:hover {
   }
   
   .totalAndSpinCount {
-    font-size: calc(20px + 3vmin);
+    font-size: calc(10px + 3vmin);
   }
 }
