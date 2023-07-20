@@ -51,7 +51,7 @@
 
 .mode {
   font-family: 'Orbitron', sans-serif;
-  font-size: 4vmin;
+  font-size: calc(5px + 3vmin);
   color: #895b8a;
   margin-left: 10px;
 }
@@ -132,7 +132,7 @@ button:hover {
 
 .totalAndSpinCount {
   font-family: 'Orbitron', sans-serif;
-  font-size: calc(5px + 2vmin);
+  font-size: calc(5px + 3vmin);
   color: #deb068;
   margin-right: 10px;
 }
@@ -191,6 +191,10 @@ button:hover {
     font-size: calc(30px + 4vmin);
   }
   
+  .mode {
+    font-size: calc(10px + 3vmin);
+  }
+
   .symbol {
     font-size: calc(25px + 7vmin);
   }
