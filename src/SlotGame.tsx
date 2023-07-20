@@ -243,7 +243,7 @@ const SlotGame = () => {
     return (
     <div className="App">
     <Header mode={isJungleRush ? "Jungle Rush" : ""} carnivalGamesLeft={isJungleRush ? String(carnivalGamesLeft) : ""} total={total} spinCount={spinCount} />
-    <Title title="My Jungle 55" version="v0.2.0" openChangeLog={openChangeLog} />
+    <Title title="My Jungle 55" version="v0.2.1" openChangeLog={openChangeLog} />
     <div className="reelContainer">
       <ReelWrapper>
         <Reel reelData={leftReel} position={leftReelPosition} />
